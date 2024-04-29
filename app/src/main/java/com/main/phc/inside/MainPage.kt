@@ -100,7 +100,8 @@ fun MainPage(onMenuIconClick: () -> Unit) {
                                     2.dp,
                                     Color(0xFF228B22),
                                     shape = MaterialTheme.shapes.extraLarge
-                                ),
+                                )
+                            ,
                         )
                         {
                             Image(

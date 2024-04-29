@@ -52,7 +52,7 @@ fun Drawer() {
     var selectedItemIndex by remember { mutableIntStateOf(0) }
 
     val items = listOf(
-        Drawers(R.drawable.homeNavLogo, "Home"),
+        Drawers(R.drawable.homenavlogo, "Home"),
         Drawers(R.drawable.favorites, ""),
         Drawers(R.drawable.userimg, "")
     )
