@@ -89,7 +89,7 @@ fun MainPage(onMenuIconClick: () -> Unit) {
                     ) {
                         IconButton(
                             onClick = {
-                                onMenuIconClick
+                                onMenuIconClick()
                             },
                             modifier = Modifier
                                 .background(
