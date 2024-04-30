@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -92,13 +91,7 @@ fun Drawer() {
                     )
                 ) {
                     IconButton(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable {
-                                scope.launch() {
-                                    drawerState.close()
-                                }
-                            },
+                        modifier = Modifier.fillMaxSize(),
                         onClick = {
                         scope.launch {
                             drawerState.close()
@@ -144,7 +137,7 @@ fun Drawer() {
         }
     )
     {
-
+        MainPage {}
     }
 }
 
