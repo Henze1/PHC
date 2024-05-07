@@ -26,9 +26,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-data class Drawers(
-    val icon: Int,
-    val label: String
-)
