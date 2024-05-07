@@ -26,6 +26,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,10 +38,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,12 +63,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import com.main.phc.R
+import kotlinx.coroutines.launch
 
-@Suppress("UNUSED_EXPRESSION")
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainPage(onMenuIconClick: () -> Unit) {
+fun MainPage(
+    drawerState: DrawerState
+) {
+    val scope = rememberCoroutineScope()
     var searchText by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
 
@@ -89,7 +96,9 @@ fun MainPage(onMenuIconClick: () -> Unit) {
                     ) {
                         IconButton(
                             onClick = {
-                                onMenuIconClick()
+                                scope.launch {
+                                    drawerState.open()
+                                }
                             },
                             modifier = Modifier
                                 .background(
@@ -289,7 +298,7 @@ fun MainPage(onMenuIconClick: () -> Unit) {
                 contentDescription = null
             )
             Text(
-                text = "\tRecommendations",
+            text = "\tRecommendations",
                 fontSize = 26.sp,
                 color = Color.DarkGray,
                 fontWeight = FontWeight.Bold,
@@ -403,5 +412,5 @@ fun imageBitmapFromResource(context: Context, imageResId: Int): ImageBitmap? {
 @Preview(showBackground = true)
 @Composable
 fun MainPagePreview() {
-    MainPage {}
+    MainPage(drawerState = rememberDrawerState(initialValue = DrawerValue.Closed))
 }
