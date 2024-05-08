@@ -1,7 +1,6 @@
 package com.main.phc.inside
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -49,10 +48,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -61,9 +58,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.drawable.toBitmap
 import com.main.phc.R
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -314,7 +311,19 @@ fun MainPage(
                 R.drawable.brandimg,
                 R.drawable.homepg,
                 R.drawable.cart1img,
-                R.drawable.favorites1)
+                R.drawable.favorites1
+            )
+
+            val membersForRow: ArrayList<MemberForRaw> = ArrayList()
+
+            images.forEach {
+                membersForRow.add(
+                    MemberForRaw(
+                        image = painterResource(id = it),
+                        name = "Member $it"
+                    )
+                )
+            }
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
@@ -326,7 +335,7 @@ fun MainPage(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    ImageSweepableRow(imageIds = images)
+                    ImageSweepableRow(images = membersForRow)
                 }
 
                 item {
@@ -336,7 +345,7 @@ fun MainPage(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    ImageSweepableRow(imageIds = images)
+                    ImageSweepableRow(images = membersForRow)
                 }
 
                 item {
@@ -346,7 +355,7 @@ fun MainPage(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    ImageSweepableRow(imageIds = images)
+                    ImageSweepableRow(images = membersForRow)
                 }
 
                 item {
@@ -356,7 +365,7 @@ fun MainPage(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    ImageSweepableRow(imageIds = images)
+                    ImageSweepableRow(images = membersForRow)
                 }
 
                 item {
@@ -366,47 +375,46 @@ fun MainPage(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    ImageSweepableRow(imageIds = images)
+                    ImageSweepableRow(images = membersForRow)
                 }
             }
         }
     }
 }
 @Composable
-fun ImageSweepableRow(imageIds: List<Int>) {
-    val context = LocalContext.current
+fun ImageSweepableRow(images: List<MemberForRaw>) {
 
     LazyRow(
         modifier = Modifier.fillMaxWidth()
-    ) {
-        items(imageIds.size) { index ->
-            val imageId = imageIds[index]
-            val imageBitmap = imageBitmapFromResource(context, imageId)
-            imageBitmap?.let {
-                Image(
-                    bitmap = it,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .size(100.dp)
-                        .clickable {
-                            //TODO("Add click logic here")
-                        }
+    )
+    {
+        items(
+            key = {
+                images[it].id
+            },
+            count = images.size
+        )
+        { index ->
+            Image(
+                painter = images[index].image,
+                contentDescription = images[index].name,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .size(100.dp)
+                    .clickable {
+                    //TODO("Add click logic here")
+                    }
                 )
             }
         }
-    }
 }
 
-fun imageBitmapFromResource(context: Context, imageResId: Int): ImageBitmap? {
-    return try {
-        val imageDrawable = context.getDrawable(imageResId)
-        imageDrawable?.toBitmap()?.asImageBitmap()
-    } catch (e: Exception) {
-        null
-    }
-}
 
+data class MemberForRaw(
+    val image: Painter,
+    val name: String,
+    val id: String = UUID.randomUUID().toString()
+)
 @Preview(showBackground = true)
 @Composable
 fun MainPagePreview() {
