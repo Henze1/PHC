@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("RememberReturnType")
 @Composable
-fun SampleAppNavGraph(
+fun AppNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),

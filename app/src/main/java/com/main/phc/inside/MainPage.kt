@@ -310,13 +310,11 @@ fun MainPage(
                 )
             )
 
-
             val images: List<Int> = listOf(
                 R.drawable.brandimg,
                 R.drawable.homepg,
                 R.drawable.cart1img,
-                R.drawable.favorites1,
-                R.drawable.favorites)
+                R.drawable.favorites1)
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
