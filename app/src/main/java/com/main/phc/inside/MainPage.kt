@@ -22,6 +22,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
@@ -46,18 +49,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.main.phc.R
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -70,7 +70,6 @@ fun MainPage(
 ) {
     val scope = rememberCoroutineScope()
     var searchText by remember { mutableStateOf("") }
-    var expanded by remember { mutableStateOf(false) }
 
     Scaffold(
         containerColor = Color(0xFFE9E9E9),
@@ -93,9 +92,7 @@ fun MainPage(
                     ) {
                         IconButton(
                             onClick = {
-                                scope.launch {
-                                    drawerState.open()
-                                }
+                                //TODO("Implement")
                             },
                             modifier = Modifier
                                 .background(
@@ -110,9 +107,15 @@ fun MainPage(
                             ,
                         )
                         {
+//                            Icon(
+//                                imageVector = Icons.Default.MoreVert,
+//                                imageVector = Icons.AutoMirrored.Filled.List,
+//                                contentDescription = "Menu",
+//                                tint = Color(0xFF228B22)
+//                            )
                             Image(
-                                painter = painterResource(id = R.drawable.menu),
-                                contentDescription = "Menu"
+                                painter =  painterResource(id = R.drawable.menuuu),
+                                contentDescription = "menu"
                             )
                         }
 
@@ -173,8 +176,7 @@ fun MainPage(
                                 singleLine = true
                             )
                         }
-                        IconButton(
-                            onClick = { expanded = true },
+                        IconButton(onClick = { /*TODO*/ },
                             modifier = Modifier
                                 .background(
                                     shape = MaterialTheme.shapes.extraLarge,
@@ -185,11 +187,11 @@ fun MainPage(
                                     Color(0xFF228B22),
                                     shape = MaterialTheme.shapes.extraLarge
                                 )
-                        ) {
+                        )
+                        {
                             Image(
-                                painter = painterResource(id = R.drawable.favorites1),
-                                contentDescription = "Favorites"
-                            )
+                                painter =  painterResource(id = R.drawable.cart1img),
+                                contentDescription = "Purchases")
                         }
                     }
                 }
@@ -225,6 +227,30 @@ fun MainPage(
                             contentDescription = "Home"
                         )
                     }
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+                                drawerState.open()
+                            }
+                        },
+                        modifier = Modifier
+                            .background(
+                                shape = MaterialTheme.shapes.extraLarge,
+                                color = Color(0xFFffffff)
+                            )
+                            .border(
+                                2.dp,
+                                Color(0xFF228B22),
+                                shape = MaterialTheme.shapes.extraLarge
+                            )
+                        ,
+                    )
+                    {
+                        Image(
+                            painter = painterResource(id = R.drawable.menu),
+                            contentDescription = "Menu"
+                        )
+                    }
                     IconButton(onClick = { /*TODO*/ },
                         modifier = Modifier
                             .background(
@@ -241,23 +267,6 @@ fun MainPage(
                         Image(
                             painter =  painterResource(id = R.drawable.brandimg),
                             contentDescription = "Brands")
-                    }
-                    IconButton(onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .background(
-                                shape = MaterialTheme.shapes.extraLarge,
-                                color = Color(0xFFFFFFFF)
-                            )
-                            .border(
-                                2.dp,
-                                Color(0xFF228B22),
-                                shape = MaterialTheme.shapes.extraLarge
-                            )
-                    )
-                    {
-                        Image(
-                            painter =  painterResource(id = R.drawable.cart1img),
-                            contentDescription = "Purchases")
                     }
                     IconButton(onClick = { /*TODO*/ },
                         modifier = Modifier
@@ -293,18 +302,6 @@ fun MainPage(
                     id = R.drawable.img_6
                 ),
                 contentDescription = null
-            )
-            Text(
-            text = "\tRecommendations",
-                fontSize = 26.sp,
-                color = Color.DarkGray,
-                fontWeight = FontWeight.Bold,
-                style = TextStyle(
-                    fontSize = 24.sp,
-                    shadow = Shadow(
-                        color = Color.Blue, offset = Offset.Infinite, blurRadius = 3f
-                    )
-                )
             )
 
             val images: List<Int> = listOf(

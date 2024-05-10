@@ -11,16 +11,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+
 import com.main.phc.draweritems.AppDrawer
 import com.main.phc.inside.AllDestinations
 import com.main.phc.inside.AppNavigationActions
 import com.main.phc.inside.MainPage
 import com.main.phc.inside.Vitamins
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -39,6 +42,7 @@ fun AppNavGraph(
     }
 
     ModalNavigationDrawer(
+        gesturesEnabled = drawerState.isOpen,
         drawerContent = {
         AppDrawer(
             route = currentRoute,
@@ -57,7 +61,7 @@ fun AppNavGraph(
             }
 
             composable(AllDestinations.VITAMINS) {
-                Vitamins()
+                Vitamins(drawerState = drawerState)
             }
         }
     }

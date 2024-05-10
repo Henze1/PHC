@@ -6,17 +6,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,24 +34,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.main.phc.R
 import com.main.phc.ui.theme.loadImageFromUrl
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun Vitamins() {
+fun Vitamins(
+    drawerState: DrawerState
+) {
+    val scope = rememberCoroutineScope()
     val memberImagesLinks: List<String> = listOf(
-        "https://scontent.fevn4-2.fna.fbcdn.net/v/t39.30808-6/295751195_425161516327682_6584328865171916036_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_ohc=SqLgUUkVSi4Q7kNvgFTbi-x&_nc_ht=scontent.fevn4-2.fna&oh=00_AfCDfoOHuUUu3hQ7IiWAt61EhooY16bK139PBfQAiSJDSQ&oe=66417DE3",
-        "https://qph.cf2.quoracdn.net/main-qimg-2ca1a453176bbf8cd0bb9e5af8820f62-lq",
-        "https://qph.cf2.quoracdn.net/main-qimg-1e73c8061a21dc9d0d35b2dbf630075f-lq",
-        "https://myhotposters.com/cdn/shop/products/mC0058_1024x1024.jpeg?v=1571444022",
-        "https://pbs.twimg.com/media/EFHpUoDUUAAhFQe.jpg",
-        "https://www.mother.ly/wp-content/uploads/2021/10/origin-6643-scaled.jpg",
-        "https://assets.gqindia.com/photos/5cdc58fae994c8b0f9b6864e/16:9/w_2560%2Cc_limit/Emily-Ratajkowski-hot-photos-top-image.jpg",
-        "https://i5.walmartimages.com/asr/e706299b-cb14-4f3d-ad0c-f82138452581.7e6f22ca9ba474a2b83259fcbb2919d7.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
-        "https://i.ebayimg.com/images/g/liEAAOSw1aFgvuZt/s-l1200.webp",
-        "https://www.gympaws.com/wp-content/uploads/2020/01/How-Jen-Got-Jacked-At-Gym-400x340.jpg",
-        "https://i.pinimg.com/474x/2d/db/76/2ddb76c3c569f0973f1df717da56a231.jpg",
-        "https://i.pinimg.com/736x/29/65/fa/2965faec6f7751ef4dacee8df0bbe8f4.jpg")
+        "https://pharmcenter.am/storage/products/00-00001961.webp",
+        "https://pharmcenter.am/storage/products/00-00001963.webp",
+        "https://pharmcenter.am/storage/products/00-00001497.webp",
+        "https://pharmcenter.am/storage/products/00-00001270.webp",
+        "https://pharmcenter.am/storage/products/00-00000278.webp",
+        "https://pharmcenter.am/storage/products/00-00001225.webp",
+        "https://pharmcenter.am/storage/products/00-00001098.webp",
+        "https://pharmcenter.am/storage/products/00-00000063.webp",
+        "https://pharmcenter.am/storage/products/MO017475.webp",
+        "https://pharmcenter.am/storage/products/MO017475.webp",
+        "https://pharmcenter.am/storage/products/MO008839.webp",
+        "https://pharmcenter.am/storage/products/00-00000187.webp"
+    )
 
     val memberForGridImages: ArrayList<Member> = ArrayList()
     memberImagesLinks.forEach {
@@ -85,10 +97,11 @@ fun Vitamins() {
             ImageSweepableRow(images = topRawImages)
         }
 
+        //TODO: Add List of members
         LazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxSize(),
             columns = GridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(4.dp),
             content = {
                 items(
                     key = {
@@ -98,8 +111,8 @@ fun Vitamins() {
                 ) {index ->
                     Column(
                         modifier = Modifier
-                            .padding(8.dp)
-                            .aspectRatio(1f)
+                            .height(400.dp)
+                            .padding(4.dp)
                             .clip(RoundedCornerShape(5.dp))
                             .background(Color.LightGray)
                             .border(
@@ -111,27 +124,59 @@ fun Vitamins() {
                                 onClick = {
                                     // TODO("Handle click event")
                                 }
-                            ),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            )
                     ) {
-                        Image(
-                            painter = memberForGridImages[index].image,
-                            contentDescription = memberForGridImages[index].id,
+                        Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(165.dp)
-                                .border(
-                                    width = 1.dp,
-                                    color = Color.Black,
-                                    shape = RoundedCornerShape(5.dp)
-                                )
-                        )
+                                .height(300.dp)
+                        ) {
+                            Image(
+                                painter = memberForGridImages[index].image,
+                                contentDescription = memberForGridImages[index].id,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .border(
+                                        width = 1.dp,
+                                        color = Color.Black,
+                                        shape = RoundedCornerShape(5.dp)
+                                    ),
+                            )
+                        }
                         Text(text = "Herbs",
                             color = Color.Black
                         )
                     }
                 }
+            }
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        FloatingActionButton(
+            containerColor = Color.White,
+            contentColor = Color.White,
+            shape = CircleShape,
+            onClick = {
+                scope.launch {
+                    drawerState.open()
+                }
+                      },
+            modifier = Modifier
+                .padding(16.dp)
+            ,
+            content = {
+                Image(
+                    modifier = Modifier
+                        .size(56.dp),
+                    painter = painterResource(id = R.drawable.menu),
+                    contentDescription = "Menu"
+                )
             }
         )
     }
@@ -144,5 +189,5 @@ data class Member(
 @Preview(showBackground = true)
 @Composable
 fun VitaminsPreview() {
-    Vitamins()
+    Vitamins( drawerState = DrawerState(initialValue = DrawerValue.Closed))
 }
