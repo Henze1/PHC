@@ -9,18 +9,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -28,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -128,7 +134,7 @@ fun Vitamins(
                     ) {
                         Box(
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .width(300.dp)
                                 .height(300.dp)
                         ) {
                             Image(
@@ -155,30 +161,53 @@ fun Vitamins(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(4.dp),
         contentAlignment = Alignment.BottomEnd
     ) {
-        FloatingActionButton(
-            containerColor = Color.White,
-            contentColor = Color.White,
-            shape = CircleShape,
-            onClick = {
-                scope.launch {
-                    drawerState.open()
+        Column {
+            FloatingActionButton(
+                containerColor = Color.White,
+                contentColor = Color.White,
+                shape = CircleShape,
+                onClick = {
+                    scope.launch {
+                        drawerState.open()
+                    }
+                },
+                modifier = Modifier
+                    .padding(16.dp),
+                content = {
+                    Image(
+                        modifier = Modifier
+                            .size(50.dp),
+                        imageVector = Icons.Default.Email,
+                        contentDescription = "Email",
+                        colorFilter = ColorFilter.tint(Color(0xFF228B22))
+                    )
                 }
-                      },
-            modifier = Modifier
-                .padding(16.dp)
-            ,
-            content = {
-                Image(
-                    modifier = Modifier
-                        .size(56.dp),
-                    painter = painterResource(id = R.drawable.menu),
-                    contentDescription = "Menu"
-                )
-            }
-        )
+            )
+
+            FloatingActionButton(
+                containerColor = Color.White,
+                contentColor = Color.White,
+                shape = CircleShape,
+                onClick = {
+                    scope.launch {
+                        drawerState.open()
+                    }
+                },
+                modifier = Modifier
+                    .padding(16.dp),
+                content = {
+                    Image(
+                        modifier = Modifier
+                            .size(56.dp),
+                        painter = painterResource(id = R.drawable.menu),
+                        contentDescription = "Menu"
+                    )
+                }
+            )
+        }
     }
 }
 

@@ -107,15 +107,10 @@ fun MainPage(
                             ,
                         )
                         {
-//                            Icon(
-//                                imageVector = Icons.Default.MoreVert,
-//                                imageVector = Icons.AutoMirrored.Filled.List,
-//                                contentDescription = "Menu",
-//                                tint = Color(0xFF228B22)
-//                            )
-                            Image(
-                                painter =  painterResource(id = R.drawable.menuuu),
-                                contentDescription = "menu"
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = "Menu",
+                                tint = Color(0xFF228B22)
                             )
                         }
 
