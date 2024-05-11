@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -71,248 +72,270 @@ fun AppDrawer(
     ) {
         DrawerHeader(modifier)
 
-        NavigationDrawerItem(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = Color.Black
-                ),
-            colors = NavigationDrawerItemDefaults.colors(
-                selectedContainerColor = Color.White,
-                unselectedContainerColor = Color.White
-            ),
-            label = {
-                Text(
-                    text = "\tHome",
-                    color = Color.Black)
-            },
-            selected = route == AllDestinations.VITAMINS,
-            onClick = {
-                navigateToHome()
-                closeDrawer()
-            },
-            icon = {
-                Image(
-                    modifier = Modifier
-                        .padding(start = 10.dp),
-                    painter = painterResource(id = R.drawable.navtohome),
-                    contentDescription = "Home"
-                )
-            }
-        )
+        LazyColumn {
+            item {
 
-        NavigationDrawerItem(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = Color.Black
-                ),
-            colors = NavigationDrawerItemDefaults.colors(
-                selectedContainerColor = Color.White,
-                unselectedContainerColor = Color.White
-            ),
-            label = {
-                Row(
+                NavigationDrawerItem(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Vitamins",
-                        color = Color.Black
-                    )
-                    IconButton(
-                        onClick = {
-                            vitaminPopupVisible = !vitaminPopupVisible
-                        }) {
-                        Icon(
-                            imageVector =
-                                if (vitaminPopupVisible) {
-                                    Icons.Default.KeyboardArrowUp
-                                } else {
-                                    Icons.Default.KeyboardArrowDown
-                                } ,
-                            contentDescription = null,
-                            tint = Color.DarkGray
+                        .border(
+                            width = 1.dp,
+                            color = Color.Black
+                        ),
+                    colors = NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = Color.White,
+                        unselectedContainerColor = Color.White
+                    ),
+                    label = {
+                        Text(
+                            text = "\tHome",
+                            color = Color.Black
+                        )
+                    },
+                    selected = route == AllDestinations.VITAMINS,
+                    onClick = {
+                        navigateToHome()
+                        closeDrawer()
+                    },
+                    icon = {
+                        Image(
+                            modifier = Modifier
+                                .padding(start = 10.dp),
+                            painter = painterResource(id = R.drawable.navtohome),
+                            contentDescription = "Home"
                         )
                     }
-                }
-            },
-            selected = route == AllDestinations.VITAMINS,
-            onClick = {
-                navigateToVitamins()
-                closeDrawer()
-            },
-            icon = {
-                Image(
-                    painter = painterResource(id = R.drawable.vitamins),
-                    contentDescription = "Vitamins"
                 )
             }
-        )
 
-        if ( vitaminPopupVisible) {
-            CardItem()
-        }
+            item {
 
-
-        NavigationDrawerItem(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = Color.Black
-                ),
-            colors = NavigationDrawerItemDefaults.colors(
-                selectedContainerColor = Color.White,
-                unselectedContainerColor = Color.White
-            ),
-            label = {
-                Row(
+                NavigationDrawerItem(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Hygiene",
-                        color = Color.Black
-                    )
-                    IconButton(
-                        onClick = {
-                            hygienePopupVisible = !hygienePopupVisible
-                        }) {
-                        Icon(
-                            imageVector =
-                            if (hygienePopupVisible) {
-                                Icons.Default.KeyboardArrowUp
-                            } else {
-                                Icons.Default.KeyboardArrowDown
-                            } ,
-                            contentDescription = null,
-                            tint = Color.DarkGray
+                        .border(
+                            width = 1.dp,
+                            color = Color.Black
+                        ),
+                    colors = NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = Color.White,
+                        unselectedContainerColor = Color.White
+                    ),
+                    label = {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Vitamins",
+                                color = Color.Black
+                            )
+                            IconButton(
+                                onClick = {
+                                    vitaminPopupVisible = !vitaminPopupVisible
+                                }) {
+                                Icon(
+                                    imageVector =
+                                    if (vitaminPopupVisible) {
+                                        Icons.Default.KeyboardArrowUp
+                                    } else {
+                                        Icons.Default.KeyboardArrowDown
+                                    },
+                                    contentDescription = null,
+                                    tint = Color.DarkGray
+                                )
+                            }
+                        }
+                    },
+                    selected = route == AllDestinations.VITAMINS,
+                    onClick = {
+                        navigateToVitamins()
+                        closeDrawer()
+                    },
+                    icon = {
+                        Image(
+                            painter = painterResource(id = R.drawable.vitamins),
+                            contentDescription = "Vitamins"
                         )
                     }
-                }
-            },
-            selected = route == AllDestinations.VITAMINS,
-            onClick = {
-                //TODO("Implement")
-                navigateToVitamins()
-                closeDrawer()
-            },
-            icon = {
-                Image(
-                    painter = painterResource(id = R.drawable.hygiene),
-                    contentDescription = "Hygiene"
                 )
+
+                if (vitaminPopupVisible) {
+                    CardItem()
+                }
             }
-        )
 
-        if (hygienePopupVisible) {
-            CardItem()
-        }
-
-        NavigationDrawerItem(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = Color.Black
-                ),
-            colors = NavigationDrawerItemDefaults.colors(
-                selectedContainerColor = Color.White,
-                unselectedContainerColor = Color.White
-            ),
-            label = {
-                Row(
+            item {
+                NavigationDrawerItem(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Herbs",
-                        color = Color.Black
-                    )
-                    IconButton(
-                        onClick = {
-                            herbsPopupVisible = !herbsPopupVisible
-                        }) {
-                        Icon(
-                            imageVector = if (herbsPopupVisible) { Icons.Default.KeyboardArrowUp} else { Icons.Default.KeyboardArrowDown} ,
-                            contentDescription = null,
-                            tint = Color.DarkGray
+                        .border(
+                            width = 1.dp,
+                            color = Color.Black
+                        ),
+                    colors = NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = Color.White,
+                        unselectedContainerColor = Color.White
+                    ),
+                    label = {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Hygiene",
+                                color = Color.Black
+                            )
+                            IconButton(
+                                onClick = {
+                                    hygienePopupVisible = !hygienePopupVisible
+                                }) {
+                                Icon(
+                                    imageVector =
+                                    if (hygienePopupVisible) {
+                                        Icons.Default.KeyboardArrowUp
+                                    } else {
+                                        Icons.Default.KeyboardArrowDown
+                                    },
+                                    contentDescription = null,
+                                    tint = Color.DarkGray
+                                )
+                            }
+                        }
+                    },
+                    selected = route == AllDestinations.VITAMINS,
+                    onClick = {
+                        //TODO("Implement")
+                        navigateToVitamins()
+                        closeDrawer()
+                    },
+                    icon = {
+                        Image(
+                            painter = painterResource(id = R.drawable.hygiene),
+                            contentDescription = "Hygiene"
                         )
                     }
-                }
-            },
-            selected = route == AllDestinations.VITAMINS,
-            onClick = {
-                //TODO("Implement")
-                navigateToVitamins()
-                closeDrawer()
-            },
-            icon = {
-                Image(
-                    painter = painterResource(id = R.drawable.herbs),
-                    contentDescription = "Herbs"
                 )
+
+                if (hygienePopupVisible) {
+                    CardItem()
+                }
             }
-        )
 
-        if (herbsPopupVisible) {
-            CardItem()
-        }
-
-        NavigationDrawerItem(
-            modifier = Modifier
-                .border(
-                    width = 1.dp,
-                    color = Color.Black
-                ),
-            colors = NavigationDrawerItemDefaults.colors(
-                selectedContainerColor = Color.White,
-                unselectedContainerColor = Color.White
-            ),
-            label = {
-                Row(
+            item {
+                NavigationDrawerItem(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Baby",
-                        color = Color.Black
-                    )
-                    IconButton(
-                        onClick = {
-                            babyPopupVisible = !babyPopupVisible
-                        }) {
-                        Icon(
-                            imageVector = if (babyPopupVisible) { Icons.Default.KeyboardArrowUp} else { Icons.Default.KeyboardArrowDown},
-                            contentDescription = null,
-                            tint = Color.DarkGray
+                        .border(
+                            width = 1.dp,
+                            color = Color.Black
+                        ),
+                    colors = NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = Color.White,
+                        unselectedContainerColor = Color.White
+                    ),
+                    label = {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Herbs",
+                                color = Color.Black
+                            )
+                            IconButton(
+                                onClick = {
+                                    herbsPopupVisible = !herbsPopupVisible
+                                }) {
+                                Icon(
+                                    imageVector = if (herbsPopupVisible) {
+                                        Icons.Default.KeyboardArrowUp
+                                    } else {
+                                        Icons.Default.KeyboardArrowDown
+                                    },
+                                    contentDescription = null,
+                                    tint = Color.DarkGray
+                                )
+                            }
+                        }
+                    },
+                    selected = route == AllDestinations.VITAMINS,
+                    onClick = {
+                        //TODO("Implement")
+                        navigateToVitamins()
+                        closeDrawer()
+                    },
+                    icon = {
+                        Image(
+                            painter = painterResource(id = R.drawable.herbs),
+                            contentDescription = "Herbs"
                         )
                     }
-                }
-            },
-            selected = route == AllDestinations.VITAMINS,
-            onClick = {
-                //TODO("Implement")
-                navigateToVitamins()
-                closeDrawer()
-            },
-            icon = {
-                Image(
-                    painter = painterResource(id = R.drawable.baby),
-                    contentDescription = "Baby"
                 )
-            }
-        )
 
-        if (babyPopupVisible) {
-            CardItem()
+                if (herbsPopupVisible) {
+                    CardItem()
+                }
+            }
+
+            item {
+                NavigationDrawerItem(
+                    modifier = Modifier
+                        .border(
+                            width = 1.dp,
+                            color = Color.Black
+                        ),
+                    colors = NavigationDrawerItemDefaults.colors(
+                        selectedContainerColor = Color.White,
+                        unselectedContainerColor = Color.White
+                    ),
+                    label = {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "Baby",
+                                color = Color.Black
+                            )
+                            IconButton(
+                                onClick = {
+                                    babyPopupVisible = !babyPopupVisible
+                                }) {
+                                Icon(
+                                    imageVector = if (babyPopupVisible) {
+                                        Icons.Default.KeyboardArrowUp
+                                    } else {
+                                        Icons.Default.KeyboardArrowDown
+                                    },
+                                    contentDescription = null,
+                                    tint = Color.DarkGray
+                                )
+                            }
+                        }
+                    },
+                    selected = route == AllDestinations.VITAMINS,
+                    onClick = {
+                        //TODO("Implement")
+                        navigateToVitamins()
+                        closeDrawer()
+                    },
+                    icon = {
+                        Image(
+                            painter = painterResource(id = R.drawable.baby),
+                            contentDescription = "Baby"
+                        )
+                    }
+                )
+
+                if (babyPopupVisible) {
+                    CardItem()
+                }
+            }
         }
     }
 }
