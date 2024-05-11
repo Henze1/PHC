@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,8 +15,11 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.main.phc.R
@@ -50,6 +55,11 @@ fun AppDrawer(
     navigateToVitamins: () -> Unit,
     closeDrawer: () -> Unit,
 ) {
+    var vitaminPopupVisible by remember { mutableStateOf(false) }
+    var hygienePopupVisible by remember { mutableStateOf(false) }
+    var herbsPopupVisible by remember { mutableStateOf(false) }
+    var babyPopupVisible by remember { mutableStateOf(false) }
+
     ModalDrawerSheet(
     modifier = Modifier
     .border(
@@ -114,10 +124,15 @@ fun AppDrawer(
                     )
                     IconButton(
                         onClick = {
-                            //TODO("Implement")
+                            vitaminPopupVisible = !vitaminPopupVisible
                         }) {
                         Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
+                            imageVector =
+                                if (vitaminPopupVisible) {
+                                    Icons.Default.KeyboardArrowUp
+                                } else {
+                                    Icons.Default.KeyboardArrowDown
+                                } ,
                             contentDescription = null,
                             tint = Color.DarkGray
                         )
@@ -136,6 +151,11 @@ fun AppDrawer(
                 )
             }
         )
+
+        if ( vitaminPopupVisible) {
+            CardItem()
+        }
+
 
         NavigationDrawerItem(
             modifier = Modifier
@@ -160,10 +180,15 @@ fun AppDrawer(
                     )
                     IconButton(
                         onClick = {
-                            //TODO("Implement")
+                            hygienePopupVisible = !hygienePopupVisible
                         }) {
                         Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
+                            imageVector =
+                            if (hygienePopupVisible) {
+                                Icons.Default.KeyboardArrowUp
+                            } else {
+                                Icons.Default.KeyboardArrowDown
+                            } ,
                             contentDescription = null,
                             tint = Color.DarkGray
                         )
@@ -183,6 +208,10 @@ fun AppDrawer(
                 )
             }
         )
+
+        if (hygienePopupVisible) {
+            CardItem()
+        }
 
         NavigationDrawerItem(
             modifier = Modifier
@@ -207,10 +236,10 @@ fun AppDrawer(
                     )
                     IconButton(
                         onClick = {
-                            //TODO("Implement")
+                            herbsPopupVisible = !herbsPopupVisible
                         }) {
                         Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
+                            imageVector = if (herbsPopupVisible) { Icons.Default.KeyboardArrowUp} else { Icons.Default.KeyboardArrowDown} ,
                             contentDescription = null,
                             tint = Color.DarkGray
                         )
@@ -230,6 +259,10 @@ fun AppDrawer(
                 )
             }
         )
+
+        if (herbsPopupVisible) {
+            CardItem()
+        }
 
         NavigationDrawerItem(
             modifier = Modifier
@@ -254,10 +287,10 @@ fun AppDrawer(
                     )
                     IconButton(
                         onClick = {
-                            //TODO("Implement")
+                            babyPopupVisible = !babyPopupVisible
                         }) {
                         Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
+                            imageVector = if (babyPopupVisible) { Icons.Default.KeyboardArrowUp} else { Icons.Default.KeyboardArrowDown},
                             contentDescription = null,
                             tint = Color.DarkGray
                         )
@@ -277,6 +310,10 @@ fun AppDrawer(
                 )
             }
         )
+
+        if (babyPopupVisible) {
+            CardItem()
+        }
     }
 }
 @Composable
@@ -358,6 +395,83 @@ fun DrawerHeader(
     )
 }
 
+@Composable
+fun CardItem(){
+    ElevatedCard(
+        modifier = Modifier
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White,
+        ),
+    ) {
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .clickable(
+                    onClick = {
+                        //TODO("Implement")
+                    }
+                ),
+            text = "Կանացի",
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .clickable(
+                    onClick = {
+                        //TODO("Implement")
+                    }
+                ),
+            text = "Տղամարդու",
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .clickable(
+                    onClick = {
+                        //TODO("Implement")
+                    }
+                ),
+            text = "Մանկական",
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .clickable(
+                    onClick = {
+                        //TODO("Implement")
+                    }
+                ),
+            text = "Գեղեցկություն",
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .clickable(
+                    onClick = {
+                        //TODO("Implement")
+                    }
+                ),
+            text = "Սպորտ",
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            modifier = Modifier
+                .padding(16.dp)
+                .clickable(
+                    onClick = {
+                        //TODO("Implement")
+                    }
+                ),
+            text = "Այլ․․․",
+            textAlign = TextAlign.Center,
+        )
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun AppDrawerPreview() {

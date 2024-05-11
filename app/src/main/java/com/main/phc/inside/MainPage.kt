@@ -24,6 +24,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -467,7 +468,7 @@ fun CatalogImageSweepableRow(images: List<Member>) {
                         Icon(
                             modifier = Modifier
                                 .size(30.dp),
-                            imageVector = Icons.Default.Favorite,
+                            imageVector = Icons.Default.FavoriteBorder,
                             contentDescription = null)
                     }
                     Text(
