@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -419,7 +421,7 @@ fun DrawerHeader(
 }
 
 @Composable
-fun CardItem(){
+fun CardItem() {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth(),
@@ -427,74 +429,31 @@ fun CardItem(){
             containerColor = Color.White,
         ),
     ) {
-        Text(
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable(
-                    onClick = {
-                        //TODO("Implement")
-                    }
-                ),
-            text = "Կանացի",
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable(
-                    onClick = {
-                        //TODO("Implement")
-                    }
-                ),
-            text = "Տղամարդու",
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable(
-                    onClick = {
-                        //TODO("Implement")
-                    }
-                ),
-            text = "Մանկական",
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable(
-                    onClick = {
-                        //TODO("Implement")
-                    }
-                ),
-            text = "Գեղեցկություն",
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable(
-                    onClick = {
-                        //TODO("Implement")
-                    }
-                ),
-            text = "Սպորտ",
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable(
-                    onClick = {
-                        //TODO("Implement")
-                    }
-                ),
-            text = "Այլ․․․",
-            textAlign = TextAlign.Center,
-        )
+        Column {
+            val items = listOf("Կանացի", "Տղամարդու", "Մանկական", "Գեղեցկություն", "Սպորտ", "Այլ․․․")
+            items.forEach { text ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            onClick = {
+                                //TODO: Implement onClick action
+                            }
+                        )
+                        .padding(16.dp)
+                ) {
+                    Text(
+                        text = text,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                }
+            }
+        }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun AppDrawerPreview() {

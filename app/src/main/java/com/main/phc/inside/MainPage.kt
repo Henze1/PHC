@@ -49,6 +49,7 @@ import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -402,6 +403,8 @@ fun MainPage(
 }
 @Composable
 fun CatalogImageSweepableRow(images: List<Member>) {
+    val selectedItems = remember { mutableStateListOf<Boolean>().apply { addAll(images.map { it.isSelected }) } }
+
 
     LazyRow(
         modifier = Modifier.fillMaxWidth()
@@ -453,24 +456,17 @@ fun CatalogImageSweepableRow(images: List<Member>) {
                                 shape = RoundedCornerShape(5.dp)
                             ),
                     )
-                    IconButton(
+                    FavoriteIconButtonOnMainPage(
+                        isSelected = selectedItems[index],
+                        onClick = {
+                            //TODO("Add click logic here for each item")
+                            selectedItems[index] = !selectedItems[index]
+                        },
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(4.dp)
-                            .size(30.dp),
-                        onClick = {
-//                                    TODO("Add logic here")
-                        },
-                        colors = IconButtonDefaults.iconButtonColors(
-                            contentColor = Color(0xFF228B22)
-                        )
-                    ) {
-                        Icon(
-                            modifier = Modifier
-                                .size(30.dp),
-                            imageVector = Icons.Default.FavoriteBorder,
-                            contentDescription = null)
-                    }
+                            .size(50.dp)
+                    )
                     Text(
                         text = "Ֆարմակոր Պրոդաքշն",
                         color = Color.Green,
@@ -546,6 +542,28 @@ fun CatalogImageSweepableRow(images: List<Member>) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun FavoriteIconButtonOnMainPage(
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val icon = if (isSelected) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+    IconButton(
+        onClick = onClick,
+        modifier = modifier,
+        colors = IconButtonDefaults.iconButtonColors(
+            contentColor = Color(0xFF228B22)
+        )
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(50.dp)
+        )
     }
 }
 

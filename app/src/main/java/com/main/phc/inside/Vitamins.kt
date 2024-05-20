@@ -1,6 +1,5 @@
 package com.main.phc.inside
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -38,6 +38,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +49,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -63,7 +66,6 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 
-@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun Vitamins(
     drawerState: DrawerState
@@ -83,11 +85,14 @@ fun Vitamins(
         "https://pharmcenter.am/storage/products/00-00000187.webp Ինտենորմ_(Բուլարդի_+_Պրոբիո_կոմպլեքս)_400մգ_դեղապատիճ_№30 11000_դր"
     )
 
-    val memberForGridImages: ArrayList<Member> = ArrayList()
+    val gridItems: ArrayList<Member> = ArrayList()
     memberImagesLinks.forEach {
         val member = it.split(" ")
-        memberForGridImages.add(Member(loadImageFromUrl(member[0]), member[1], member[2]))
+        gridItems.add(Member(loadImageFromUrl(member[0]), member[1], member[2]))
     }
+
+    val selectedItems = remember { mutableStateListOf<Boolean>().apply { addAll(gridItems.map { it.isSelected }) } }
+
 
     val images: List<Int> = listOf(
         R.drawable.brandimg,
@@ -115,6 +120,7 @@ fun Vitamins(
             .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
     ) {
+        Spacer(modifier = Modifier.height(4.dp))
         ImageSweepableRowForCatalog(images = topRawImages)
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -138,9 +144,9 @@ fun Vitamins(
             content = {
                 items(
                     key = {
-                        memberForGridImages[it].id
+                        gridItems[it].id
                     },
-                    count =  memberForGridImages.size
+                    count =  gridItems.size
                 ) {index ->
                     Column(
                         modifier = Modifier
@@ -170,8 +176,8 @@ fun Vitamins(
                                 )
                         ) {
                             Image(
-                                painter = memberForGridImages[index].image,
-                                contentDescription = memberForGridImages[index].id,
+                                painter = gridItems[index].image,
+                                contentDescription = gridItems[index].id,
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .border(
@@ -180,24 +186,17 @@ fun Vitamins(
                                         shape = RoundedCornerShape(5.dp)
                                     ),
                             )
-                            IconButton(
+                            FavoriteIconButtonOnVitaminsPage(
+                                isSelected = selectedItems[index],
+                                onClick = {
+                                    selectedItems[index] = !selectedItems[index]
+                                },
                                 modifier = Modifier
                                     .align(Alignment.TopEnd)
                                     .padding(4.dp)
-                                    .size(50.dp),
-                                onClick = {
-//                                    TODO("Add logic here")
-                                },
-                                colors = IconButtonDefaults.iconButtonColors(
-                                    contentColor = Color(0xFF228B22)
-                                )
-                            ) {
-                                Icon(
-                                    modifier = Modifier
-                                        .size(50.dp),
-                                    imageVector = Icons.Default.Favorite,
-                                    contentDescription = null)
-                            }
+                                    .size(50.dp)
+                            )
+
                             Text(
                                 text = "Ֆարմակոր Պրոդաքշն",
                                 color = Color.Green,
@@ -215,7 +214,7 @@ fun Vitamins(
                         Text(
                             modifier = Modifier
                                 .padding(start = 8.dp),
-                            text = memberForGridImages[index].name.replace("_", " "),
+                            text = gridItems[index].name.replace("_", " "),
                             color = Color.Black,
                             maxLines = 2,
                             minLines = 2,
@@ -239,14 +238,14 @@ fun Vitamins(
                             Text(
                                 modifier = Modifier
                                     .padding(start = 30.dp),
-                                text = memberForGridImages[index].price.replace("_", " "),
+                                text = gridItems[index].price.replace("_", " "),
                                 color = Color(0xFF228B22),
                             )
                             Text(
                                 maxLines = 1,
                                 modifier = Modifier
                                     .padding(end = 20.dp),
-                                text = memberForGridImages[index].price.replace("_", " "),
+                                text = gridItems[index].price.replace("_", " "),
                                 color = Color.Red,
                                 style = TextStyle(
                                     textDecoration = TextDecoration.LineThrough,
@@ -325,6 +324,27 @@ fun Vitamins(
     }
 }
 
+@Composable
+fun FavoriteIconButtonOnVitaminsPage(
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val icon = if (isSelected) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
+    IconButton(
+        onClick = onClick,
+        modifier = modifier,
+        colors = IconButtonDefaults.iconButtonColors(
+            contentColor = Color(0xFF228B22)
+        )
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.size(50.dp)
+        )
+    }
+}
 
 @Composable
 fun ImageSweepableRowForCatalog(images: List<Member>) {
@@ -386,7 +406,9 @@ data class Member(
     val image: Painter,
     val name: String,
     val price: String,
-    val id: String = UUID.randomUUID().toString()
+    val id: String = UUID.randomUUID().toString(),
+    var icon: ImageVector = Icons.Default.FavoriteBorder,
+    var isSelected: Boolean = false
 )
 @Preview(showBackground = true)
 @Composable
