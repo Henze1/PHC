@@ -136,7 +136,8 @@ fun Vitamins(
             color = Color.Gray
         )
 
-        //TODO: Add List of members
+        // TODO("Add List of members")
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxSize(),
@@ -161,7 +162,7 @@ fun Vitamins(
                             )
                             .clickable(
                                 onClick = {
-                                    // TODO("Handle click event")
+                                    TODO("Handle click event")
                                 }
                             ),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -190,6 +191,10 @@ fun Vitamins(
                                 isSelected = selectedItems[index],
                                 onClick = {
                                     selectedItems[index] = !selectedItems[index]
+//                                    TODO(
+//                                        "if userExits add to favorites" +
+//                                                "else redirect to login/signup page"
+//                                    )
                                 },
                                 modifier = Modifier
                                     .align(Alignment.TopEnd)
@@ -259,7 +264,7 @@ fun Vitamins(
                             modifier = Modifier
                                 .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
                             onClick = {
-                                //TODO("Add click logic here")
+                                TODO("Add click logic here")
                         }) {
                             Row {
                                 Text(text = "Add to cart", color = Color.White, fontSize = 14.sp)
@@ -285,7 +290,7 @@ fun Vitamins(
                 contentColor = Color.White,
                 shape = CircleShape,
                 onClick = {
-                        //TODO("Add click logic here")
+                        TODO("Add click logic here")
                 },
                 modifier = Modifier
                     .padding(16.dp),
@@ -385,7 +390,7 @@ fun ImageSweepableRowForCatalog(images: List<Member>) {
                             shape = RoundedCornerShape(5.dp)
                         )
                         .clickable {
-                            //TODO("Add click logic here")
+                            TODO("Add click logic here")
                         }
                 )
                 Spacer(modifier = Modifier.height(4.dp))

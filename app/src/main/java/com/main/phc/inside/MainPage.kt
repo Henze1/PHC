@@ -48,7 +48,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,6 +62,8 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -73,7 +77,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.main.phc.R
 import com.main.phc.ui.theme.loadImageFromUrl
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -99,6 +105,18 @@ fun MainPage(
     catalogMemberImagesLinks.forEach {
         val member = it.split(" ")
         memberForCatalogImages.add(Member(loadImageFromUrl(member[0]), member[1], member[2]))
+    }
+    val headerImagesLinks: List<String> = listOf(
+        "https://pharmcenter.am/storage/home-sliders/April2024/F2vwhpaIcSvAbt2yMmG5.webp",
+        "https://pharmcenter.am/storage/home-sliders/April2024/APu08QTEZeUUAggYQKlK.webp",
+        "https://pharmcenter.am/storage/home-sliders/April2024/glRkI2mtzYNgEHzSSUm5.webp",
+        "https://pharmcenter.am/storage/home-sliders/April2024/zyqZpX6I9h6KjeNRbeTp.jpeg",
+        "https://pharmcenter.am/storage/home-sliders/November2023/wkazXBXAwraKPaPqeXBh.jpeg"
+    )
+
+    val headerImages: ArrayList<Painter> = ArrayList()
+    headerImagesLinks.forEach {
+        headerImages.add(loadImageFromUrl(it))
     }
 
     val scope = rememberCoroutineScope()
@@ -325,12 +343,14 @@ fun MainPage(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Spacer(modifier = Modifier.height(2.dp))
-            Image(
-                painter = painterResource(
-                    id = R.drawable.img_6
-                ),
-                contentDescription = null
-            )
+//            Image(
+//                painter = painterResource(
+//                    id = R.drawable.img_6
+//                ),
+//                contentDescription = null
+//            )
+
+            AutoSweepableHeaderImages(images = headerImages)
 
             HorizontalDivider(
                 modifier = Modifier
@@ -459,8 +479,11 @@ fun CatalogImageSweepableRow(images: List<Member>) {
                     FavoriteIconButtonOnMainPage(
                         isSelected = selectedItems[index],
                         onClick = {
-                            //TODO("Add click logic here for each item")
                             selectedItems[index] = !selectedItems[index]
+//                            TODO(
+//                                  "if userExits add to favorites" +
+//                                  "else redirect to login/signup page"
+//                            )
                         },
                         modifier = Modifier
                             .align(Alignment.TopEnd)
@@ -544,6 +567,36 @@ fun CatalogImageSweepableRow(images: List<Member>) {
         }
     }
 }
+@Composable
+fun AutoSweepableHeaderImages(images: List<Painter>, changeInterval: Long = 3000L) {
+    var currentIndex by remember { mutableIntStateOf(0) }
+
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(changeInterval)
+            currentIndex = Random.nextInt(images.size)
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp),
+        contentAlignment = Alignment.Center,
+        propagateMinConstraints = true
+    ) {
+        Image(
+            painter = images[currentIndex],
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center)
+        )
+    }
+}
+
 
 @Composable
 fun FavoriteIconButtonOnMainPage(
@@ -566,7 +619,6 @@ fun FavoriteIconButtonOnMainPage(
         )
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun MainPagePreview() {
