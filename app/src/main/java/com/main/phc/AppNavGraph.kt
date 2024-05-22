@@ -51,7 +51,9 @@ fun AppNavGraph(
             closeDrawer = { coroutineScope.launch { drawerState.close() } },
             modifier = Modifier
         )
-    }, drawerState = drawerState) {
+        },
+        drawerState = drawerState
+    ) {
         NavHost(
             navController = navController, startDestination = AllDestinations.HOME, modifier = modifier.padding()
         ) {

@@ -10,11 +10,11 @@ import coil.transform.RoundedCornersTransformation
 fun loadImageFromUrl(url: String): Painter {
     val painter: Painter = rememberImagePainter(
         data = url,
-        builder = {
-            // You can add transformations here if needed
-            transformations(RoundedCornersTransformation())
-            scale(Scale.FILL)
-        }
+//        builder = {
+//            // You can add transformations here if needed
+//            transformations(RoundedCornersTransformation())
+//            scale(Scale.FILL)
+//        }
     )
 
     return painter

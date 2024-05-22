@@ -23,15 +23,18 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +51,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.main.phc.R
 import com.main.phc.inside.AllDestinations
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @SuppressLint("PrivateResource")
 @Composable
@@ -454,6 +459,33 @@ fun CardItem() {
     }
 }
 
+
+@Suppress("NAME_SHADOWING")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CartBottomSheet(
+    scope: CoroutineScope,
+    showBottomSheet: Boolean,
+    closeDrawer: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(showBottomSheet) }
+    ModalBottomSheet(
+        onDismissRequest = {
+            showBottomSheet = false
+            scope.launch { sheetState.hide() }.invokeOnCompletion {
+                if (!sheetState.isVisible) {
+                    showBottomSheet = false
+                }
+            }
+            closeDrawer()
+        },
+        sheetState = sheetState,
+    ) {
+        content()
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun AppDrawerPreview() {

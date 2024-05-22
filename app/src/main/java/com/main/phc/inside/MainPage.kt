@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -56,6 +57,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -76,17 +78,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.main.phc.R
+import com.main.phc.draweritems.CartBottomSheet
 import com.main.phc.ui.theme.loadImageFromUrl
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+
+//val cartMembers: ArrayList<Member> = ArrayList()
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainPage(
     drawerState: DrawerState
 ) {
+    val cartMembers = remember { mutableStateListOf<Member>() }
     val catalogMemberImagesLinks: List<String> = listOf(
         "https://pharmcenter.am/storage/products/00-00001961.webp Магния_цитрат_капс_600мг_х_60 4800_դր",
         "https://pharmcenter.am/storage/products/00-00001963.webp Магне-В6_капс_400мг_х_90 5200_դր",
@@ -120,8 +126,10 @@ fun MainPage(
     }
 
     val scope = rememberCoroutineScope()
+
     var searchText by remember { mutableStateOf("") }
 
+    var showBottomSheet by remember { mutableStateOf(false) }
     Scaffold(
         containerColor = Color(0xFFE9E9E9),
         topBar = {
@@ -222,7 +230,10 @@ fun MainPage(
                                 singleLine = true
                             )
                         }
-                        IconButton(onClick = { /*TODO*/ },
+                        IconButton(onClick = {
+                            //TODO("Implement")
+                            showBottomSheet = true
+                        },
                             modifier = Modifier
                                 .background(
                                     shape = MaterialTheme.shapes.extraLarge,
@@ -238,6 +249,20 @@ fun MainPage(
                             Image(
                                 painter =  painterResource(id = R.drawable.cart1img),
                                 contentDescription = "Purchases")
+                        }
+                        if (showBottomSheet) {
+                            @Suppress("KotlinConstantConditions")
+                            CartBottomSheet(
+                                scope = scope,
+                                showBottomSheet = showBottomSheet,
+                                closeDrawer = {
+                                    scope.launch { drawerState.close() }
+                                        .invokeOnCompletion { showBottomSheet = false }
+                                }
+                            )
+                            {
+                                SheetContent(items = cartMembers)
+                            }
                         }
                     }
                 }
@@ -343,12 +368,6 @@ fun MainPage(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Spacer(modifier = Modifier.height(2.dp))
-//            Image(
-//                painter = painterResource(
-//                    id = R.drawable.img_6
-//                ),
-//                contentDescription = null
-//            )
 
             AutoSweepableHeaderImages(images = headerImages)
 
@@ -375,7 +394,10 @@ fun MainPage(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    CatalogImageSweepableRow(images = memberForCatalogImages)
+                    CatalogImageSweepableRow(
+                        images = memberForCatalogImages,
+                        items = cartMembers
+                    )
                 }
 
                 item {
@@ -385,7 +407,10 @@ fun MainPage(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    CatalogImageSweepableRow(images = memberForCatalogImages)
+                    CatalogImageSweepableRow(
+                        images = memberForCatalogImages,
+                        items = cartMembers
+                    )
                 }
 
                 item {
@@ -395,7 +420,10 @@ fun MainPage(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    CatalogImageSweepableRow(images = memberForCatalogImages)
+                    CatalogImageSweepableRow(
+                        images = memberForCatalogImages,
+                        items = cartMembers
+                    )
                 }
 
                 item {
@@ -405,7 +433,10 @@ fun MainPage(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    CatalogImageSweepableRow(images = memberForCatalogImages)
+                    CatalogImageSweepableRow(
+                        images = memberForCatalogImages,
+                        items = cartMembers
+                    )
                 }
 
                 item {
@@ -415,14 +446,17 @@ fun MainPage(
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    CatalogImageSweepableRow(images = memberForCatalogImages)
+                    CatalogImageSweepableRow(
+                        images = memberForCatalogImages,
+                        items = cartMembers
+                    )
                 }
             }
         }
     }
 }
 @Composable
-fun CatalogImageSweepableRow(images: List<Member>) {
+fun CatalogImageSweepableRow(images: List<Member>, items: SnapshotStateList<Member>) {
     val selectedItems = remember { mutableStateListOf<Boolean>().apply { addAll(images.map { it.isSelected }) } }
 
 
@@ -556,6 +590,14 @@ fun CatalogImageSweepableRow(images: List<Member>) {
                         .size(width = 100.dp, height = 35.dp),
                     onClick = {
                         //TODO("Add click logic here")
+                        items.add(
+                            Member(
+                                image = images[index].image,
+                                name = images[index].name,
+                                price = images[index].price,
+                                id = images[index].id
+                            )
+                        )
                     }) {
                     Row {
                         Text(text = "Add", color = Color.White, fontSize = 14.sp)
@@ -571,7 +613,6 @@ fun CatalogImageSweepableRow(images: List<Member>) {
 fun AutoSweepableHeaderImages(images: List<Painter>, changeInterval: Long = 3000L) {
     var currentIndex by remember { mutableIntStateOf(0) }
 
-
     LaunchedEffect(Unit) {
         while (true) {
             delay(changeInterval)
@@ -582,9 +623,8 @@ fun AutoSweepableHeaderImages(images: List<Painter>, changeInterval: Long = 3000
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
-        contentAlignment = Alignment.Center,
-        propagateMinConstraints = true
+            .heightIn(max = 155.dp),
+        contentAlignment = Alignment.Center
     ) {
         Image(
             painter = images[currentIndex],
@@ -592,10 +632,10 @@ fun AutoSweepableHeaderImages(images: List<Painter>, changeInterval: Long = 3000
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .fillMaxSize()
-                .align(Alignment.Center)
         )
     }
 }
+
 
 
 @Composable

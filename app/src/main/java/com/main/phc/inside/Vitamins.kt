@@ -411,7 +411,7 @@ data class Member(
     val image: Painter,
     val name: String,
     val price: String,
-    val id: String = UUID.randomUUID().toString(),
+    var id: String = UUID.randomUUID().toString(),
     var icon: ImageVector = Icons.Default.FavoriteBorder,
     var isSelected: Boolean = false
 )
