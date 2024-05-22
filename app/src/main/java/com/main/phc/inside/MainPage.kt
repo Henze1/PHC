@@ -20,10 +20,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.MoreVert
@@ -36,6 +38,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -64,6 +67,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -453,6 +457,32 @@ fun MainPage(
                 }
             }
         }
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(end = 8.dp, bottom = 100.dp),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        FloatingActionButton(
+            containerColor = Color.White,
+            contentColor = Color.White,
+            shape = CircleShape,
+            onClick = {
+                TODO("Add click logic here")
+            },
+            modifier = Modifier
+                .padding(16.dp),
+            content = {
+                Image(
+                    modifier = Modifier
+                        .size(50.dp),
+                    imageVector = Icons.Default.Email,
+                    contentDescription = "Email",
+                    colorFilter = ColorFilter.tint(Color(0xFF228B22))
+                )
+            }
+        )
     }
 }
 @Composable
