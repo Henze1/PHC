@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import com.main.phc.inside.Member
+import com.main.phc.inside.Product
 import com.main.phc.ui.theme.PHCTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +23,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavGraph()
+//                    AppNavGraph()
+                    val member = Member(painterResource(id = R.drawable.userimg), "User", "7980")
+                    Product(member)
                 }
             }
         }

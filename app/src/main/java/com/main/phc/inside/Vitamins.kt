@@ -411,6 +411,7 @@ data class Member(
     val image: Painter,
     val name: String,
     val price: String,
+    var count: Int = 1,
     var id: String = UUID.randomUUID().toString(),
     var icon: ImageVector = Icons.Default.FavoriteBorder,
     var isSelected: Boolean = false
