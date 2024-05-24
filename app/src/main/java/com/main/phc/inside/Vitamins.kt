@@ -48,8 +48,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -63,7 +61,6 @@ import androidx.compose.ui.unit.sp
 import com.main.phc.R
 import com.main.phc.ui.theme.loadImageFromUrl
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 
 @Composable
@@ -407,15 +404,6 @@ fun ImageSweepableRowForCatalog(images: List<Member>) {
     }
 }
 
-data class Member(
-    val image: Painter,
-    val name: String,
-    val price: String,
-    var count: Int = 1,
-    var id: String = UUID.randomUUID().toString(),
-    var icon: ImageVector = Icons.Default.FavoriteBorder,
-    var isSelected: Boolean = false
-)
 @Preview(showBackground = true)
 @Composable
 fun VitaminsPreview() {
