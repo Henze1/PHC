@@ -60,7 +60,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -81,9 +80,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.main.phc.R
 import com.main.phc.draweritems.CartBottomSheet
+import com.main.phc.inside.AllDestinations.PRODUCT
 import com.main.phc.ui.theme.loadImageFromUrl
+import com.main.phc.viewmodels.MemberViewModel
+import com.main.phc.viewmodels.MemberViewModel.Companion.memberList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.random.Random
@@ -92,27 +96,36 @@ import kotlin.random.Random
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainPage(
-    drawerState: DrawerState
+    drawerState: DrawerState,
+    navController: NavHostController,
+    memberViewModel: MemberViewModel
 ) {
-    val cartMembers = remember { mutableStateListOf<Member>() }
     val catalogMemberImagesLinks: List<String> = listOf(
-        "https://pharmcenter.am/storage/products/00-00001961.webp Магния_цитрат_капс_600мг_х_60 4800_դր",
-        "https://pharmcenter.am/storage/products/00-00001963.webp Магне-В6_капс_400мг_х_90 5200_դր",
-        "https://pharmcenter.am/storage/products/00-00001497.webp Омега_3_капс.1000мг_х_60 8075_դր",
-        "https://pharmcenter.am/storage/products/00-00001270.webp Դուոսլիմ_էքսպերտ_պատիճներ_№60 3825_դր",
-        "https://pharmcenter.am/storage/products/00-00000278.webp Янтарная_кислота_форте_400мг_таб_х_30 3100_դր",
-        "https://pharmcenter.am/storage/products/00-00001225.webp Նիկոտինաթթու_10_մգ/մլ_1մլ_-_1%_լուծույթ_ներարկման_ն/ե,_մ/մ_,_ե/մ_սրվակներ_№10 1200_դր",
-        "https://pharmcenter.am/storage/products/00-00001098.webp Альфа-липоевая_кислота_форте_таб_п/о_100мг_х_30 3250_դր",
-        "https://pharmcenter.am/storage/products/00-00000063.webp Витрум_Кидс_плюс_с_3_до_7лет_с_йодом_таб._х_30 5000_դր",
-        "https://pharmcenter.am/storage/products/MO017475.webp Nestle_Ֆիթնես 230_դր",
-        "https://pharmcenter.am/storage/products/MO008839.webp Մեզիմ_ֆորտե_դհտ._N20 800_դր",
-        "https://pharmcenter.am/storage/products/00-00000187.webp Ինտենորմ_(Բուլարդի_+_Պրոբիո_կոմպլեքս)_400մգ_դեղապատիճ_№30 11000_դր"
+        "https://pharmcenter.am/storage/products/00-00001961.webp Магния_цитрат_капс_600мг_х_60 4800_դր Արտադրող Երկիր",
+        "https://pharmcenter.am/storage/products/00-00001963.webp Магне-В6_капс_400мг_х_90 5200_դր Արտադրող Երկիր",
+        "https://pharmcenter.am/storage/products/00-00001497.webp Омега_3_капс.1000мг_х_60 8075_դր Արտադրող Երկիր",
+        "https://pharmcenter.am/storage/products/00-00001270.webp Դուոսլիմ_էքսպերտ_պատիճներ_№60 3825_դր Արտադրող Երկիր",
+        "https://pharmcenter.am/storage/products/00-00000278.webp Янтарная_кислота_форте_400мг_таб_х_30 3100_դր Արտադրող Երկիր",
+        "https://pharmcenter.am/storage/products/00-00001225.webp Նիկոտինաթթու_10_մգ/մլ_1մլ_-_1%_լուծույթ_ներարկման_ն/ե,_մ/մ_,_ե/մ_սրվակներ_№10 1200_դր Արտադրող Երկիր",
+        "https://pharmcenter.am/storage/products/00-00001098.webp Альфа-липоевая_кислота_форте_таб_п/о_100мг_х_30 3250_դր Արտադրող Երկիր",
+        "https://pharmcenter.am/storage/products/00-00000063.webp Витрум_Кидс_плюс_с_3_до_7лет_с_йодом_таб._х_30 5000_դր Արտադրող Երկիր",
+        "https://pharmcenter.am/storage/products/MO017475.webp Nestle_Ֆիթնես 230_դր producer country",
+        "https://pharmcenter.am/storage/products/MO008839.webp Մեզիմ_ֆորտե_դհտ._N20 800_դր producer country",
+        "https://pharmcenter.am/storage/products/00-00000187.webp Ինտենորմ_(Բուլարդի_+_Պրոբիո_կոմպլեքս)_400մգ_դեղապատիճ_№30 11000_դր producer country"
     )
 
     val memberForCatalogImages: ArrayList<Member> = ArrayList()
     catalogMemberImagesLinks.forEach {
         val member = it.split(" ")
-        memberForCatalogImages.add(Member(loadImageFromUrl(member[0]), member[1], member[2]))
+        memberForCatalogImages.add(
+            Member(
+                image =  loadImageFromUrl(member[0]),
+                name =  member[1],
+                price =  member[2],
+                producer = member[3],
+                producerCountry = member[4]
+            )
+        )
     }
     val headerImagesLinks: List<String> = listOf(
         "https://pharmcenter.am/storage/home-sliders/April2024/F2vwhpaIcSvAbt2yMmG5.webp",
@@ -235,7 +248,7 @@ fun MainPage(
                         IconButton(onClick = {
                             //TODO("Implement")
                             showBottomSheet = true
-                        },
+                            },
                             modifier = Modifier
                                 .background(
                                     shape = MaterialTheme.shapes.extraLarge,
@@ -263,7 +276,7 @@ fun MainPage(
                                 }
                             )
                             {
-                                SheetContent(items = cartMembers)
+                                SheetContent(items = memberList)
                             }
                         }
                     }
@@ -282,7 +295,9 @@ fun MainPage(
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            //TODO("Implement")
+                        },
                         modifier = Modifier
                             .background(
                                 shape = MaterialTheme.shapes.extraLarge,
@@ -398,7 +413,8 @@ fun MainPage(
                     Spacer(modifier = Modifier.height(8.dp))
                     CatalogImageSweepableRow(
                         images = memberForCatalogImages,
-                        items = cartMembers
+                        memberViewModel = memberViewModel,
+                        navController = navController
                     )
                 }
 
@@ -411,7 +427,8 @@ fun MainPage(
                     Spacer(modifier = Modifier.height(8.dp))
                     CatalogImageSweepableRow(
                         images = memberForCatalogImages,
-                        items = cartMembers
+                        memberViewModel = memberViewModel,
+                        navController = navController
                     )
                 }
 
@@ -424,7 +441,8 @@ fun MainPage(
                     Spacer(modifier = Modifier.height(8.dp))
                     CatalogImageSweepableRow(
                         images = memberForCatalogImages,
-                        items = cartMembers
+                        memberViewModel = memberViewModel,
+                        navController = navController
                     )
                 }
 
@@ -437,7 +455,8 @@ fun MainPage(
                     Spacer(modifier = Modifier.height(8.dp))
                     CatalogImageSweepableRow(
                         images = memberForCatalogImages,
-                        items = cartMembers
+                        memberViewModel = memberViewModel,
+                        navController = navController
                     )
                 }
 
@@ -450,7 +469,8 @@ fun MainPage(
                     Spacer(modifier = Modifier.height(8.dp))
                     CatalogImageSweepableRow(
                         images = memberForCatalogImages,
-                        items = cartMembers
+                        memberViewModel = memberViewModel,
+                        navController = navController
                     )
                 }
             }
@@ -484,7 +504,11 @@ fun MainPage(
     }
 }
 @Composable
-fun CatalogImageSweepableRow(images: List<Member>, items: SnapshotStateList<Member>) {
+fun CatalogImageSweepableRow(
+    images: List<Member>,
+    memberViewModel: MemberViewModel,
+    navController: NavHostController
+) {
     val selectedItems = remember { mutableStateListOf<Boolean>().apply { addAll(images.map { it.isSelected }) } }
 
 
@@ -514,6 +538,8 @@ fun CatalogImageSweepableRow(images: List<Member>, items: SnapshotStateList<Memb
                     .clickable(
                         onClick = {
                             // TODO("Handle click event")
+                            memberViewModel.member = images[index]
+                            navController.navigate(PRODUCT)
                         }
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -553,7 +579,7 @@ fun CatalogImageSweepableRow(images: List<Member>, items: SnapshotStateList<Memb
                             .size(50.dp)
                     )
                     Text(
-                        text = "Ֆարմակոր Պրոդաքշն",
+                        text = images[index].producer,
                         color = Color.Green,
                         textAlign = TextAlign.Start,
                         modifier = Modifier
@@ -618,14 +644,23 @@ fun CatalogImageSweepableRow(images: List<Member>, items: SnapshotStateList<Memb
                         .size(width = 100.dp, height = 35.dp),
                     onClick = {
                         //TODO("Add click logic here")
-                        items.add(
-                            Member(
-                                image = images[index].image,
-                                name = images[index].name,
-                                price = images[index].price,
-                                id = images[index].id
+
+                        if(memberList.contains(images[index])) {
+                            memberList.remove(images[index])
+                            images[index].count++
+                            memberList.add(images[index])
+                        } else {
+                            memberList.add(
+                                Member(
+                                    image = images[index].image,
+                                    name = images[index].name,
+                                    price = images[index].price,
+                                    producer = images[index].producer,
+                                    producerCountry = images[index].producerCountry,
+                                    id = images[index].id
+                                )
                             )
-                        )
+                        }
                     }) {
                     Row {
                         Text(text = "Add", color = Color.White, fontSize = 14.sp)
@@ -690,5 +725,9 @@ fun FavoriteIconButtonOnMainPage(
 @Preview(showBackground = true)
 @Composable
 fun MainPagePreview() {
-    MainPage(drawerState = rememberDrawerState(initialValue = DrawerValue.Closed))
+    MainPage(
+        drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
+        navController = rememberNavController(),
+        memberViewModel = MemberViewModel()
+    )
 }

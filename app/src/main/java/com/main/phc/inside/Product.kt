@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,7 +23,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,34 +39,44 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.VerticalDivider
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.main.phc.R
+import com.main.phc.draweritems.CartBottomSheet
+import com.main.phc.viewmodels.MemberViewModel.Companion.memberList
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Product(
+    drawerState: DrawerState,
     member: Member,
-    memberForCatalogImages: ArrayList<Member>,
-    cartMembers: SnapshotStateList<Member>
+//    memberForCatalogImages: ArrayList<Member>,
+//    cartMembers: SnapshotStateList<Member>
 ) {
     val itemCount = remember { mutableIntStateOf(member.count) }
     var searchText by remember { mutableStateOf("") }
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -166,12 +183,13 @@ fun Product(
                 Column(
                     modifier = Modifier
                         .fillMaxSize(),
-                    verticalArrangement = Arrangement.SpaceEvenly
+                    verticalArrangement = Arrangement.Top
                 ) {
                     Text(
                         textAlign = TextAlign.Center,
-                        text = member.name,
-                        maxLines = 5,
+                        text = member.name.replace("_", " "),
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -181,39 +199,43 @@ fun Product(
                     if (member.producerCountry != "") {
                         Text(
                             textAlign = TextAlign.Center,
-                            text = member.producerCountry,
+                            text = "Երկ: " + member.producerCountry,
                             maxLines = 1,
                             minLines = 1,
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(4.dp)
                         )
                     }
 
                     if (member.producer != "") {
                         Text(
                             textAlign = TextAlign.Center,
-                            text = member.producer,
+                            text = "Արտդ: " + member.producer,
                             maxLines = 1,
                             minLines = 1,
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(4.dp)
                         )
                     }
 
                     Text(
                         textAlign = TextAlign.Center,
-                        text = member.id,
+                        text = "կոդ։ " + member.id,
                         maxLines = 2,
                         minLines = 1,
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(4.dp)
                     )
                 }
             }
             HorizontalDivider()
+
             Row(
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically,
@@ -278,11 +300,45 @@ fun Product(
                 }
                 Text(
                     textAlign = TextAlign.Center,
-                    text = (member.price.toInt() * itemCount.intValue).toString() + " դր",
+                    text = (member.price.replace("_դր", "").toInt() * itemCount.intValue).toString() + " դր",
                     maxLines = 5,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .padding(10.dp)
+                )
+            }
+            HorizontalDivider()
+            Button(
+                onClick = {
+                    //TODO("Implement")
+                    if(memberList.contains(member)) {
+                        memberList.remove(member)
+                        member.count++
+                        memberList.add(member)
+                    } else {
+                        memberList.add(
+                            Member(
+                                image = member.image,
+                                name = member.name,
+                                price = member.price,
+                                producer = member.producer,
+                                producerCountry = member.producerCountry,
+                                id = member.id
+                            )
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF228B22),
+                    contentColor = Color.White
+                )
+            ) {
+                Text(
+                    text = "Add to cart",
+                    color = Color.White
                 )
             }
             HorizontalDivider()
@@ -293,11 +349,57 @@ fun Product(
                 modifier = Modifier
                     .padding(start = 10.dp, top = 10.dp)
             )
+        }
 
-            CatalogImageSweepableRow(
-                memberForCatalogImages,
-                cartMembers
-            )
+        //TODO("replace with actual bottom sheet")
+        Text(
+            textAlign = TextAlign.Center,
+            text = "Այս դաշտը դեռևս ազատ է",
+            fontSize = 16.sp,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
+            minLines = 2
+        )
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(end = 8.dp, bottom = 8.dp),
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        FloatingActionButton(
+            containerColor = Color.White,
+            contentColor = Color.White,
+            shape = CircleShape,
+            onClick = {
+                showBottomSheet = true
+            },
+            modifier = Modifier
+                .padding(16.dp),
+            content = {
+                Image(
+                    modifier = Modifier
+                        .size(50.dp),
+                    painter = painterResource(id = R.drawable.cart1img),
+                    contentDescription = "Email",
+                    colorFilter = ColorFilter.tint(Color(0xFF228B22))
+                )
+            }
+        )
+    }
+    if (showBottomSheet) {
+            @Suppress("KotlinConstantConditions")
+            CartBottomSheet(
+            scope = scope,
+            showBottomSheet = showBottomSheet,
+            closeDrawer = {
+                scope.launch { drawerState.close() }
+                    .invokeOnCompletion { showBottomSheet = false }
+            }
+        )
+        {
+            SheetContent(items = memberList)
         }
     }
 }
@@ -305,9 +407,8 @@ fun Product(
 @Preview(showBackground = true)
 @Composable
 fun ProductPreview() {
-    val list1 = ArrayList<Member>()
-    val list2 = SnapshotStateList<Member>()
     Product(
+        drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
         member = Member(
             image = painterResource(id = R.drawable.userimg),
             name = "A product with a long name",
@@ -315,8 +416,6 @@ fun ProductPreview() {
             producer = "Producer",
             producerCountry = "Country",
             id = "123456789"
-        ),
-        memberForCatalogImages = list1,
-        cartMembers = list2
+        )
     )
 }

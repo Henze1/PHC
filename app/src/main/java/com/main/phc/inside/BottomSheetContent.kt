@@ -1,7 +1,9 @@
 package com.main.phc.inside
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
@@ -32,7 +35,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun SheetContent(items: SnapshotStateList<Member>) {
-    val price = items.sumOf { it.price.replace("_դր", "").toInt() }
+    val price = items.sumOf { it.price.replace("_դր", "").toInt() * it.count }
 
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -94,12 +97,26 @@ fun SheetContent(items: SnapshotStateList<Member>) {
                         modifier = Modifier
                             .weight(1f)
                     ) {
-                        Image(
-                            painter = items[index].image,
-                            contentDescription = null,
+                        Box(
                             modifier = Modifier
                                 .size(50.dp)
-                        )
+                        ) {
+                            Image(
+                                painter = items[index].image,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            )
+                            Text(
+                                text = items[index].count.toString(),
+                                color = Color.Black,
+                                fontSize = 16.sp,
+                                modifier = Modifier
+                                    .align(Alignment.TopEnd)
+                                    .background(Color.White, shape = CircleShape)
+                                    .padding(4.dp)
+                            )
+                        }
                         Column {
                             Text(
                                 text = items[index].name.replace('_', ' '),

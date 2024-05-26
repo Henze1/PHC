@@ -38,9 +38,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -58,15 +61,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.main.phc.R
+import com.main.phc.draweritems.CartBottomSheet
+import com.main.phc.inside.AllDestinations.PRODUCT
 import com.main.phc.ui.theme.loadImageFromUrl
+import com.main.phc.viewmodels.MemberViewModel
+import com.main.phc.viewmodels.MemberViewModel.Companion.memberList
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun Vitamins(
-    drawerState: DrawerState
+    drawerState: DrawerState,
+    navController: NavHostController,
+    memberViewModel: MemberViewModel
 ) {
+    var showBottomSheet by remember { mutableStateOf(false) }
+
     val scope = rememberCoroutineScope()
     val memberImagesLinks: List<String> = listOf(
         "https://pharmcenter.am/storage/products/00-00001961.webp Магния_цитрат_капс_600мг_х_60 4800_դր",
@@ -159,7 +172,9 @@ fun Vitamins(
                             )
                             .clickable(
                                 onClick = {
-                                    TODO("Handle click event")
+                                    //TODO("Handle click event")
+                                    memberViewModel.member = gridItems[index]
+                                    navController.navigate(PRODUCT)
                                 }
                             ),
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -261,7 +276,23 @@ fun Vitamins(
                             modifier = Modifier
                                 .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
                             onClick = {
-                                TODO("Add click logic here")
+                                //TODO("Add click logic here")
+                                if(memberList.contains(gridItems[index])) {
+                                    memberList.remove(gridItems[index])
+                                    gridItems[index].count++
+                                    memberList.add(gridItems[index])
+                                } else {
+                                    memberList.add(
+                                        Member(
+                                            image = gridItems[index].image,
+                                            name = gridItems[index].name,
+                                            price = gridItems[index].price,
+                                            producer = gridItems[index].producer,
+                                            producerCountry = gridItems[index].producerCountry,
+                                            id = gridItems[index].id
+                                        )
+                                    )
+                                }
                         }) {
                             Row {
                                 Text(text = "Add to cart", color = Color.White, fontSize = 14.sp)
@@ -287,7 +318,28 @@ fun Vitamins(
                 contentColor = Color.White,
                 shape = CircleShape,
                 onClick = {
-                        TODO("Add click logic here")
+                    //TODO("Add click logic here")
+                    showBottomSheet = true
+                },
+                modifier = Modifier
+                    .padding(16.dp),
+                content = {
+                    Image(
+                        modifier = Modifier
+                            .size(50.dp),
+                        painter = painterResource(id = R.drawable.cart1img),
+                        contentDescription = "Email",
+                        colorFilter = ColorFilter.tint(Color(0xFF228B22))
+                    )
+                }
+            )
+
+            FloatingActionButton(
+                containerColor = Color.White,
+                contentColor = Color.White,
+                shape = CircleShape,
+                onClick = {
+                        //TODO("Add click logic here")
                 },
                 modifier = Modifier
                     .padding(16.dp),
@@ -323,6 +375,20 @@ fun Vitamins(
                 }
             )
         }
+    }
+    if (showBottomSheet) {
+        @Suppress("KotlinConstantConditions")
+        (CartBottomSheet(
+        scope = scope,
+        showBottomSheet = showBottomSheet,
+        closeDrawer = {
+            scope.launch { drawerState.close() }
+                .invokeOnCompletion { showBottomSheet = false }
+        }
+    )
+    {
+        SheetContent(items = memberList)
+    })
     }
 }
 
@@ -407,5 +473,9 @@ fun ImageSweepableRowForCatalog(images: List<Member>) {
 @Preview(showBackground = true)
 @Composable
 fun VitaminsPreview() {
-    Vitamins( drawerState = DrawerState(initialValue = DrawerValue.Closed))
+    Vitamins(
+        drawerState = DrawerState(initialValue = DrawerValue.Closed),
+        navController = rememberNavController(),
+        memberViewModel = MemberViewModel()
+    )
 }
