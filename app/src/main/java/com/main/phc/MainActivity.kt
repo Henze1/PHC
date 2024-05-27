@@ -21,18 +21,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     AppNavGraph()
-//                    val list1 = ArrayList<Member>()
-//                    val list2 = SnapshotStateList<Member>()
-//
-//                    val member = Member(
-//                        image = painterResource(id = R.drawable.userimg),
-//                        name = "A product with a long name",
-//                        price = "7980",
-//                        producer = "Producer",
-//                        producerCountry = "Country",
-//                        id = "123456789"
-//                    )
-//                    Product(member, list1, list2)
                 }
             }
         }

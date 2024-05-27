@@ -20,6 +20,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
@@ -59,6 +60,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.main.phc.AppNavigation.Companion.navController
 import com.main.phc.R
 import com.main.phc.draweritems.CartBottomSheet
 import com.main.phc.viewmodels.MemberViewModel.Companion.memberList
@@ -170,13 +172,24 @@ fun Product(
                     .fillMaxWidth()
                     .height(180.dp)
             ) {
-                Image(
-                    painter = member.image,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .aspectRatio(1f)
-                )
+                Box {
+                    Image(
+                        painter = member.image,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .aspectRatio(1f)
+                    )
+                    IconButton(
+                        onClick = {
+                            navController.navigate(AllDestinations.HOME)
+                        },
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                    ) {
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                    }
+                }
                 VerticalDivider()
                 Column(
                     modifier = Modifier
@@ -312,16 +325,7 @@ fun Product(
                     if(memberList.contains(member)) {
                         member.count++
                     } else {
-                        memberList.add(
-                            Member(
-                                image = member.image,
-                                name = member.name,
-                                price = member.price,
-                                producer = member.producer,
-                                producerCountry = member.producerCountry,
-                                id = member.id
-                            )
-                        )
+                        memberList.add(member)
                     }
                 },
                 modifier = Modifier
@@ -395,7 +399,7 @@ fun Product(
             }
         )
         {
-            SheetContent(items1 = memberList)
+            SheetContent()
         }
     }
 }

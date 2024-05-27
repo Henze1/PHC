@@ -280,16 +280,7 @@ fun Vitamins(
                                 if(memberList.contains(gridItems[index])) {
                                     gridItems[index].count++
                                 } else {
-                                    memberList.add(
-                                        Member(
-                                            image = gridItems[index].image,
-                                            name = gridItems[index].name,
-                                            price = gridItems[index].price,
-                                            producer = gridItems[index].producer,
-                                            producerCountry = gridItems[index].producerCountry,
-                                            id = gridItems[index].id
-                                        )
-                                    )
+                                    memberList.add(gridItems[index])
                                 }
                         }) {
                             Row {
@@ -385,7 +376,7 @@ fun Vitamins(
         }
     )
     {
-        SheetContent(items1 = memberList)
+        SheetContent()
     })
     }
 }

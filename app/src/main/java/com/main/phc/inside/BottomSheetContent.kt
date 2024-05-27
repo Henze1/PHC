@@ -23,7 +23,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.main.phc.viewmodels.MemberViewModel.Companion.memberList
 
 @Composable
-fun SheetContent(items1: SnapshotStateList<Member>) {
+fun SheetContent() {
     val items = memberList
 
     val price = items.sumOf { it.price.replace("_դր", "").toInt() * it.count }
@@ -159,5 +158,5 @@ fun isKeyExist(id: String, items: SnapshotStateList<Member>): Boolean {
 @Composable
 @Preview(showBackground = true)
 fun SheetContentPreview() {
-    SheetContent(items1 = ArrayList<Member>().toMutableStateList())
+    SheetContent()
 }

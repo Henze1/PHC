@@ -276,7 +276,7 @@ fun MainPage(
                                 }
                             )
                             {
-                                SheetContent(items1 = memberList)
+                                SheetContent()
                             }
                         }
                     }
@@ -648,16 +648,7 @@ fun CatalogImageSweepableRow(
                         if(memberList.contains(images[index])) {
                             images[index].count++
                         } else {
-                            memberList.add(
-                                Member(
-                                    image = images[index].image,
-                                    name = images[index].name,
-                                    price = images[index].price,
-                                    producer = images[index].producer,
-                                    producerCountry = images[index].producerCountry,
-                                    id = images[index].id
-                                )
-                            )
+                            memberList.add(images[index])
                         }
                     }) {
                     Row {
