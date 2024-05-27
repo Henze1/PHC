@@ -22,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -144,15 +143,6 @@ fun SheetContent() {
             }
         }
     }
-}
-
-fun isKeyExist(id: String, items: SnapshotStateList<Member>): Boolean {
-    for (item in items) {
-        if (item.id == id) {
-            return true
-        }
-    }
-    return false
 }
 
 @Composable
