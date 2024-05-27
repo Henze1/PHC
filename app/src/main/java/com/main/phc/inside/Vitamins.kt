@@ -278,9 +278,7 @@ fun Vitamins(
                             onClick = {
                                 //TODO("Add click logic here")
                                 if(memberList.contains(gridItems[index])) {
-                                    memberList.remove(gridItems[index])
                                     gridItems[index].count++
-                                    memberList.add(gridItems[index])
                                 } else {
                                     memberList.add(
                                         Member(
@@ -387,7 +385,7 @@ fun Vitamins(
         }
     )
     {
-        SheetContent(items = memberList)
+        SheetContent(items1 = memberList)
     })
     }
 }

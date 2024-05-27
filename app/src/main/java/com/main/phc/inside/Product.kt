@@ -68,9 +68,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun Product(
     drawerState: DrawerState,
-    member: Member,
-//    memberForCatalogImages: ArrayList<Member>,
-//    cartMembers: SnapshotStateList<Member>
+    member: Member
 ) {
     val itemCount = remember { mutableIntStateOf(member.count) }
     var searchText by remember { mutableStateOf("") }
@@ -312,9 +310,7 @@ fun Product(
                 onClick = {
                     //TODO("Implement")
                     if(memberList.contains(member)) {
-                        memberList.remove(member)
                         member.count++
-                        memberList.add(member)
                     } else {
                         memberList.add(
                             Member(
@@ -399,7 +395,7 @@ fun Product(
             }
         )
         {
-            SheetContent(items = memberList)
+            SheetContent(items1 = memberList)
         }
     }
 }

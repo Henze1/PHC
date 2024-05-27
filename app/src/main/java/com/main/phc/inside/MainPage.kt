@@ -276,7 +276,7 @@ fun MainPage(
                                 }
                             )
                             {
-                                SheetContent(items = memberList)
+                                SheetContent(items1 = memberList)
                             }
                         }
                     }
@@ -487,7 +487,7 @@ fun MainPage(
             contentColor = Color.White,
             shape = CircleShape,
             onClick = {
-                TODO("Add click logic here")
+                //TODO("Add click logic here")
             },
             modifier = Modifier
                 .padding(16.dp),
@@ -646,9 +646,7 @@ fun CatalogImageSweepableRow(
                         //TODO("Add click logic here")
 
                         if(memberList.contains(images[index])) {
-                            memberList.remove(images[index])
                             images[index].count++
-                            memberList.add(images[index])
                         } else {
                             memberList.add(
                                 Member(

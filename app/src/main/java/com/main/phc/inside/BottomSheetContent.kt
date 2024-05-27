@@ -32,9 +32,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.main.phc.viewmodels.MemberViewModel.Companion.memberList
 
 @Composable
-fun SheetContent(items: SnapshotStateList<Member>) {
+fun SheetContent(items1: SnapshotStateList<Member>) {
+    val items = memberList
+
     val price = items.sumOf { it.price.replace("_դր", "").toInt() * it.count }
 
     Row(
@@ -156,5 +159,5 @@ fun isKeyExist(id: String, items: SnapshotStateList<Member>): Boolean {
 @Composable
 @Preview(showBackground = true)
 fun SheetContentPreview() {
-    SheetContent(items = ArrayList<Member>().toMutableStateList())
+    SheetContent(items1 = ArrayList<Member>().toMutableStateList())
 }
