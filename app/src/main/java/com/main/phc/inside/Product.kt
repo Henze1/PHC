@@ -52,6 +52,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -60,7 +61,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.main.phc.AppNavigation.Companion.navController
+import androidx.navigation.NavHostController
+import com.main.phc.AppNavigation.Companion.getRoute
 import com.main.phc.R
 import com.main.phc.draweritems.CartBottomSheet
 import com.main.phc.viewmodels.MemberViewModel.Companion.memberList
@@ -69,6 +71,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Product(
+    navController: NavHostController,
     drawerState: DrawerState,
     member: Member
 ) {
@@ -182,7 +185,7 @@ fun Product(
                     )
                     IconButton(
                         onClick = {
-                            navController.navigate(AllDestinations.HOME)
+                            navController.navigate(getRoute())
                         },
                         modifier = Modifier
                             .align(Alignment.TopStart)
@@ -408,6 +411,7 @@ fun Product(
 @Composable
 fun ProductPreview() {
     Product(
+        navController = NavHostController(LocalContext.current),
         drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
         member = Member(
             image = painterResource(id = R.drawable.userimg),

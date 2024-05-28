@@ -37,6 +37,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -82,8 +84,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.main.phc.AppNavigation.Companion.setRoute
 import com.main.phc.R
 import com.main.phc.draweritems.CartBottomSheet
+import com.main.phc.inside.AllDestinations.HOME
 import com.main.phc.inside.AllDestinations.PRODUCT
 import com.main.phc.ui.theme.loadImageFromUrl
 import com.main.phc.viewmodels.MemberViewModel
@@ -145,6 +149,10 @@ fun MainPage(
     var searchText by remember { mutableStateOf("") }
 
     var showBottomSheet by remember { mutableStateOf(false) }
+
+    var isMenuExpanded by remember { mutableStateOf(false) }
+
+    var isSearchExpanded by remember { mutableStateOf(false) }
     Scaffold(
         containerColor = Color(0xFFE9E9E9),
         topBar = {
@@ -164,28 +172,56 @@ fun MainPage(
                             .fillMaxWidth()
                             .height(100.dp)
                     ) {
-                        IconButton(
-                            onClick = {
-                                //TODO("Implement")
-                            },
-                            modifier = Modifier
-                                .background(
-                                    shape = MaterialTheme.shapes.extraLarge,
-                                    color = Color(0xFFffffff)
-                                )
-                                .border(
-                                    2.dp,
-                                    Color(0xFF228B22),
-                                    shape = MaterialTheme.shapes.extraLarge
-                                )
-                            ,
-                        )
-                        {
-                            Icon(
-                                imageVector = Icons.Default.MoreVert,
-                                contentDescription = "Menu",
-                                tint = Color(0xFF228B22)
+                        Box {
+                            IconButton(
+                                onClick = {
+                                    isMenuExpanded = !isMenuExpanded
+                                },
+                                modifier = Modifier
+                                    .background(
+                                        shape = MaterialTheme.shapes.extraLarge,
+                                        color = Color(0xFFffffff)
+                                    )
+                                    .border(
+                                        2.dp,
+                                        Color(0xFF228B22),
+                                        shape = MaterialTheme.shapes.extraLarge
+                                    ),
                             )
+                            {
+                                Icon(
+                                    imageVector = Icons.Default.MoreVert,
+                                    contentDescription = "Menu",
+                                    tint = Color(0xFF228B22)
+                                )
+                            }
+
+                            DropdownMenu(
+                                expanded = isMenuExpanded,
+                                onDismissRequest = { isMenuExpanded = false }
+                            ) {
+                                DropdownMenuItem(
+                                    onClick = {
+                                        isMenuExpanded = false
+                                        //TODO("Implement the rest of the menu items")
+                                    },
+                                    text = { Text(text = "English") }
+                                )
+                                DropdownMenuItem(
+                                    onClick = {
+                                        isMenuExpanded = false
+                                        //TODO("Implement the rest of the menu items")
+                                    },
+                                    text = { Text(text = "English") }
+                                )
+                                DropdownMenuItem(
+                                    onClick = {
+                                        isMenuExpanded = false
+                                        //TODO("Implement the rest of the menu items")
+                                    },
+                                    text = { Text(text = "English") }
+                                )
+                            }
                         }
 
                         Box(
@@ -220,7 +256,7 @@ fun MainPage(
                                 trailingIcon = {
                                     IconButton(
                                         onClick = {
-                                            //TODO("Implement")
+                                            isSearchExpanded = !isSearchExpanded
                                         },
                                         content = {
                                             Icon(
@@ -244,8 +280,46 @@ fun MainPage(
                                 ),
                                 singleLine = true
                             )
+
+                            DropdownMenu(
+                                modifier = Modifier
+                                    .width(280.dp),
+                                expanded = isSearchExpanded,
+                                onDismissRequest = { isSearchExpanded = false }
+                            )
+                            {
+                                DropdownMenuItem(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    onClick = {
+                                        isSearchExpanded = false
+                                        //TODO("Implement the rest of the search options")
+                                    },
+                                    text = { Text(text = "English") }
+                                )
+                                DropdownMenuItem(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    onClick = {
+                                        isSearchExpanded = false
+                                        //TODO("Implement the rest of the search options")
+                                    },
+                                    text = { Text(text = "English") }
+                                )
+                                DropdownMenuItem(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    onClick = {
+                                        isSearchExpanded = false
+                                        //TODO("Implement the rest of the search options")
+                                    },
+                                    text = { Text(text = "English") }
+                                )
+
+                            }
                         }
-                        IconButton(onClick = {
+                        IconButton(
+                            onClick = {
                             //TODO("Implement")
                             showBottomSheet = true
                             },
@@ -339,7 +413,10 @@ fun MainPage(
                             contentDescription = "Menu"
                         )
                     }
-                    IconButton(onClick = { /*TODO*/ },
+                    IconButton(
+                        onClick = {
+                            //TODO("Implement")
+                        },
                         modifier = Modifier
                             .background(
                                 shape = MaterialTheme.shapes.extraLarge,
@@ -356,7 +433,10 @@ fun MainPage(
                             painter =  painterResource(id = R.drawable.brandimg),
                             contentDescription = "Brands")
                     }
-                    IconButton(onClick = { /*TODO*/ },
+                    IconButton(
+                        onClick = {
+                            //TODO("Implement")
+                        },
                         modifier = Modifier
                             .background(
                                 shape = MaterialTheme.shapes.extraLarge,
@@ -537,7 +617,7 @@ fun CatalogImageSweepableRow(
                     )
                     .clickable(
                         onClick = {
-                            // TODO("Handle click event")
+                            setRoute(HOME)
                             memberViewModel.member = images[index]
                             navController.navigate(PRODUCT)
                         }

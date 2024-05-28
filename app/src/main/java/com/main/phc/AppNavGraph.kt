@@ -31,16 +31,23 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class AppNavigation{
-    companion object{
-
-        @SuppressLint("StaticFieldLeak")
-        @JvmStatic lateinit var navController: NavHostController
-    }
-
+    private lateinit var navController: NavHostController
     @Composable
     fun getNavHostController(): NavHostController {
         navController = rememberNavController()
         return navController
+    }
+
+    companion object {
+        private lateinit var currentRoute: String
+
+        fun getRoute(): String {
+            return currentRoute
+        }
+
+        fun setRoute(route: String) {
+            currentRoute = route
+        }
     }
 }
 
@@ -89,6 +96,7 @@ fun AppNavGraph(
                 val member = memberViewModel.member
                 member?.let {
                     Product(
+                        navController = navController,
                         drawerState = drawerState,
                         member = member
                     )

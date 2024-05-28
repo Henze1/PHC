@@ -63,9 +63,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.main.phc.AppNavigation.Companion.setRoute
 import com.main.phc.R
 import com.main.phc.draweritems.CartBottomSheet
 import com.main.phc.inside.AllDestinations.PRODUCT
+import com.main.phc.inside.AllDestinations.VITAMINS
 import com.main.phc.ui.theme.loadImageFromUrl
 import com.main.phc.viewmodels.MemberViewModel
 import com.main.phc.viewmodels.MemberViewModel.Companion.memberList
@@ -173,6 +175,7 @@ fun Vitamins(
                             .clickable(
                                 onClick = {
                                     //TODO("Handle click event")
+                                    setRoute(VITAMINS)
                                     memberViewModel.member = gridItems[index]
                                     navController.navigate(PRODUCT)
                                 }
